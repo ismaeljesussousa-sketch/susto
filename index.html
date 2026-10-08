@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Abraço Virtual do Dia 💖</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --rosa:#ffd6e7; --rosa-forte:#ff8fb8; --azul:#cfe8ff; --amarelo:#fff3b8;
+    --lilas:#e6d9ff; --texto:#7a4a68;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:"Baloo 2","Comic Sans MS","Trebuchet MS",system-ui,sans-serif;
+    color:var(--texto);
+    background:linear-gradient(160deg,var(--rosa) 0%,var(--lilas) 45%,var(--azul) 100%);
+    overflow:hidden;
+    -webkit-tap-highlight-color:transparent;
+  }
+
+  /* ---------- Decoração fofa ---------- */
+  .nuvem{position:fixed;font-size:clamp(3rem,9vw,6rem);opacity:.85;animation:flutuar 9s ease-in-out infinite;user-select:none}
+  .n1{top:6%;left:5%}
+  .n2{top:14%;right:7%;animation-delay:-3s}
+  .n3{bottom:10%;left:10%;animation-delay:-5s}
+  .n4{bottom:16%;right:6%;animation-delay:-7s}
+  .coracao{position:fixed;bottom:-40px;font-size:1.6rem;animation:subir linear infinite;opacity:.8;user-select:none}
+  @keyframes flutuar{50%{transform:translateY(-16px) translateX(8px)}}
+  @keyframes subir{to{transform:translateY(-115vh) rotate(25deg);opacity:0}}
+
+  main{
+    min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:24px;gap:18px;position:relative;z-index:2
+  }
+  .arco{font-size:clamp(2.5rem,8vw,4rem)}
+  .gatinho{font-size:clamp(5rem,20vw,8rem);animation:balanco 2.6s ease-in-out infinite;transform-origin:50% 90%}
+  @keyframes balanco{50%{transform:rotate(-6deg) scale(1.05)}}
+  h1{font-size:clamp(1.9rem,6vw,3.2rem);font-weight:800;line-height:1.1;color:#d4608f}
+  p.sub{font-size:clamp(1.05rem,3vw,1.4rem);font-weight:500;max-width:30ch}
+
+  #botao{
+    font:inherit;font-weight:800;font-size:clamp(1.15rem,4vw,1.6rem);
+    color:#fff;background:linear-gradient(180deg,#ff9cc2,var(--rosa-forte));
+    border:0;border-radius:999px;padding:.85em 1.8em;cursor:pointer;
+    box-shadow:0 8px 0 #e0668f,0 16px 30px rgba(224,102,143,.4);
+    animation:pulsar 1.6s ease-in-out infinite;
+    transition:transform .1s,box-shadow .1s;
+  }
+  #botao:hover{filter:brightness(1.05)}
+  #botao:active{transform:translateY(6px);box-shadow:0 2px 0 #e0668f}
+  #botao:focus-visible{outline:4px solid var(--amarelo);outline-offset:4px}
+  @keyframes pulsar{50%{transform:scale(1.05)}}
+  .rodape{font-size:.95rem;opacity:.8}
+
+  /* ---------- Susto ---------- */
+  #susto{
+    position:fixed;inset:0;z-index:999;background:#000;display:none;
+    align-items:center;justify-content:center;overflow:hidden;
+  }
+  #susto.ativo{display:flex}
+  #susto .conteudo{width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+  #susto svg,#susto img{width:100%;height:100%;object-fit:cover}
+  #susto .conteudo{animation:tremer .06s infinite, zoom .5s ease-out forwards}
+  #flash{position:absolute;inset:0;background:red;mix-blend-mode:multiply;opacity:0;pointer-events:none;
+    animation:piscar .12s steps(2) infinite}
+  @keyframes tremer{
+    0%{transform:translate(0,0) rotate(0)}
+    25%{transform:translate(-18px,12px) rotate(-1.2deg)}
+    50%{transform:translate(16px,-14px) rotate(1deg)}
+    75%{transform:translate(-12px,-10px) rotate(-.8deg)}
+    100%{transform:translate(14px,12px) rotate(1.2deg)}
+  }
+  @keyframes zoom{from{scale:.6}to{scale:1.15}}
+  @keyframes piscar{0%{opacity:0}100%{opacity:.75}}
+
+  #voltar{
+    position:absolute;bottom:24px;left:50%;transform:translateX(-50%);
+    display:none;font:inherit;font-weight:700;font-size:1.1rem;
+    background:#fff;color:#d4608f;border:0;border-radius:999px;padding:.6em 1.4em;cursor:pointer;
+    z-index:5;box-shadow:0 6px 20px rgba(0,0,0,.5)
+  }
+  #voltar.mostrar{display:block}
+
+  @media (prefers-reduced-motion:reduce){
+    .nuvem,.coracao,.gatinho,#botao{animation:none}
+  }
+</style>
+</head>
+<body>
+
+<span class="nuvem n1">☁️</span>
+<span class="nuvem n2">🌈</span>
+<span class="nuvem n3">☁️</span>
+<span class="nuvem n4">⭐</span>
+
+<main id="tela-fofa">
+  <div class="arco">🌈</div>
+  <div class="gatinho" aria-hidden="true">🐱</div>
+  <h1>Seu abraço virtual do dia!</h1>
+  <p class="sub">Alguém muito especial preparou uma surpresinha fofa para você ✨</p>
+  <button id="botao" type="button">Clique aqui para receber um abraço virtual 💖</button>
+  <div class="rodape">Feito com muito carinho 🧸</div>
+</main>
+
+<!-- Tela do susto -->
+<div id="susto" aria-hidden="true">
+  <div class="conteudo" id="conteudo-susto"></div>
+  <div id="flash"></div>
+  <button id="voltar" type="button">Era só uma pegadinha! 😄 Voltar</button>
+</div>
+
+<script>
+(() => {
+  /* ==================== CONFIGURAÇÃO ====================
+     Por padrão, a imagem (SVG) e o grito (Web Audio) são gerados pelo
+     próprio código — nada quebra se um link sair do ar.
+     Se quiser usar arquivos seus, coloque as URLs abaixo:
+  ======================================================== */
+  const IMAGEM_URL = "";   // ex.: "https://seusite.com/assustador.jpg"
+  const AUDIO_URL  = "";   // ex.: "https://seusite.com/grito.mp3"
+  const DURACAO_ATE_BOTAO_VOLTAR = 3000; // ms
+
+  const botao = document.getElementById("botao");
+  const susto = document.getElementById("susto");
+  const conteudo = document.getElementById("conteudo-susto");
+  const voltar = document.getElementById("voltar");
+
+  /* Corações subindo (decoração) */
+  const emojis = ["💖","💗","💕","🌸","⭐"];
+  for (let i = 0; i < 14; i++) {
+    const c = document.createElement("span");
+    c.className = "coracao";
+    c.textContent = emojis[i % emojis.length];
+    c.style.left = Math.random() * 100 + "vw";
+    c.style.animationDuration = 8 + Math.random() * 8 + "s";
+    c.style.animationDelay = -Math.random() * 12 + "s";
+    document.body.appendChild(c);
+  }
+
+  /* Rosto assustador desenhado em SVG */
+  const ROSTO_SVG = `
+  <svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="fundo" cx="50%" cy="45%" r="75%">
+        <stop offset="0" stop-color="#3a0000"/><stop offset="1" stop-color="#000"/>
+      </radialGradient>
+      <radialGradient id="pele" cx="50%" cy="40%" r="65%">
+        <stop offset="0" stop-color="#d9d9c8"/><stop offset="1" stop-color="#6d6d5c"/>
+      </radialGradient>
+    </defs>
+    <rect width="400" height="400" fill="url(#fundo)"/>
+    <ellipse cx="200" cy="205" rx="125" ry="175" fill="url(#pele)"/>
+    <!-- olheiras e olhos -->
+    <ellipse cx="148" cy="165" rx="42" ry="52" fill="#000"/>
+    <ellipse cx="252" cy="165" rx="42" ry="52" fill="#000"/>
+    <circle cx="148" cy="168" r="9" fill="#fff"/>
+    <circle cx="252" cy="168" r="9" fill="#fff"/>
+    <circle cx="148" cy="168" r="3" fill="#c00"/>
+    <circle cx="252" cy="168" r="3" fill="#c00"/>
+    <!-- sobrancelhas -->
+    <path d="M95 110 L185 135" stroke="#000" stroke-width="10" stroke-linecap="round"/>
+    <path d="M305 110 L215 135" stroke="#000" stroke-width="10" stroke-linecap="round"/>
+    <!-- nariz -->
+    <path d="M200 190 L188 245 L212 245 Z" fill="#000" opacity=".7"/>
+    <!-- boca -->
+    <path d="M110 275 Q200 255 290 275 Q270 385 200 390 Q130 385 110 275 Z" fill="#000"/>
+    <path d="M120 280 L132 310 L144 282 L158 318 L172 285 L188 322 L200 287 L212 322 L228 285 L242 318 L256 282 L268 310 L280 280"
+          fill="#f2f2e6" stroke="#f2f2e6" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M140 372 L152 345 L166 372 L182 348 L200 376 L218 348 L234 372 L248 345 L260 372"
+          fill="#f2f2e6" stroke="#f2f2e6" stroke-width="2" stroke-linejoin="round"/>
+    <!-- sangue escorrendo -->
+    <path d="M148 215 q-4 40 2 70 M252 215 q4 45 -2 85" stroke="#b00000" stroke-width="7" fill="none" stroke-linecap="round"/>
+    <!-- rachaduras -->
+    <path d="M200 30 L190 70 L205 100 L195 130" stroke="#222" stroke-width="3" fill="none"/>
+  </svg>`;
+
+  /* Grito sintetizado com Web Audio API */
+  function gritoSintetizado() {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return;
+    const ctx = new AC();
+    if (ctx.state === "suspended") ctx.resume();
+    const t = ctx.currentTime, dur = 2.2;
+
+    const master = ctx.createGain();
+    master.gain.setValueAtTime(0.0001, t);
+    master.gain.exponentialRampToValueAtTime(1, t + 0.02);
+    master.gain.setValueAtTime(1, t + dur - 0.5);
+    master.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+
+    const comp = ctx.createDynamicsCompressor();
+    const dist = ctx.createWaveShaper();
+    const curva = new Float32Array(256);
+    for (let i = 0; i < 256; i++) { const x = i / 128 - 1; curva[i] = Math.tanh(x * 6); }
+    dist.curve = curva;
+
+    dist.connect(master); master.connect(comp); comp.connect(ctx.destination);
+
+    // Vozes agudas com glissando e vibrato
+    [[900, 1.0], [1350, 0.7], [610, 0.6]].forEach(([f, g], i) => {
+      const o = ctx.createOscillator();
+      o.type = i === 1 ? "square" : "sawtooth";
+      o.frequency.setValueAtTime(f * 0.6, t);
+      o.frequency.exponentialRampToValueAtTime(f * 1.5, t + 0.25);
+      o.frequency.exponentialRampToValueAtTime(f * 1.1, t + dur);
+
+      const lfo = ctx.createOscillator(), lfoG = ctx.createGain();
+      lfo.frequency.value = 22 + i * 5; lfoG.gain.value = 45;
+      lfo.connect(lfoG); lfoG.connect(o.frequency);
+
+      const gn = ctx.createGain(); gn.gain.value = g * 0.35;
+      o.connect(gn); gn.connect(dist);
+      o.start(t); lfo.start(t); o.stop(t + dur); lfo.stop(t + dur);
+    });
+
+    // Ruído (chiado)
+    const buf = ctx.createBuffer(1, ctx.sampleRate * dur, ctx.sampleRate);
+    const d = buf.getChannelData(0);
+    for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    const ruido = ctx.createBufferSource(); ruido.buffer = buf;
+    const bp = ctx.createBiquadFilter(); bp.type = "bandpass"; bp.frequency.value = 3000; bp.Q.value = 0.6;
+    const rg = ctx.createGain(); rg.gain.value = 0.5;
+    ruido.connect(bp); bp.connect(rg); rg.connect(dist);
+    ruido.start(t);
+  }
+
+  function tocarSom() {
+    if (AUDIO_URL) {
+      const a = new Audio(AUDIO_URL);
+      a.volume = 1;
+      a.play().catch(gritoSintetizado); // se o arquivo falhar, usa o grito gerado
+    } else {
+      gritoSintetizado();
+    }
+  }
+
+  function darSusto() {
+    // O som precisa vir PRIMEIRO e direto do clique, para o navegador permitir.
+    tocarSom();
+
+    conteudo.innerHTML = IMAGEM_URL
+      ? `<img src="${IMAGEM_URL}" alt="" onerror="this.outerHTML=window.__rosto">`
+      : ROSTO_SVG;
+    window.__rosto = ROSTO_SVG;
+
+    susto.classList.add("ativo");
+    susto.setAttribute("aria-hidden", "false");
+    if (navigator.vibrate) navigator.vibrate([300, 80, 300, 80, 500]);
+
+    setTimeout(() => voltar.classList.add("mostrar"), DURACAO_ATE_BOTAO_VOLTAR);
+  }
+
+  function voltarAoFofo() {
+    susto.classList.remove("ativo");
+    susto.setAttribute("aria-hidden", "true");
+    voltar.classList.remove("mostrar");
+    conteudo.innerHTML = "";
+  }
+
+  botao.addEventListener("click", darSusto);
+  voltar.addEventListener("click", voltarAoFofo);
+})();
+</script>
+</body>
+</html>
